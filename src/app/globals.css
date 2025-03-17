@@ -1,26 +1,175 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --chocolate: #E6CFC1;
+  --beige: #D7B29D;
+  --lightbeige: #e7c8b7;
+  --white: #fdfcfc;
+  --off-white: #f7f3f1;
+  --rose: #C58B93;
+  --olive: 	#a1c6a3;
+  --gold: #C68346;
+  --dark-gray: #191919;
+  --gray: #5e5e5e;
+  --light-gray: #cecece;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@font-face {
+  font-family: "BigStemLight";
+  src: local("BigStemLight"),
+    url("./fonts/BigStemLight.ttf") format("opentype");
+  font-weight: normal;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@font-face {
+  font-family: "SingoRegular";
+  src: local("SingoRegular"),
+    url("./fonts/SingoRegular.otf") format("opentype");
+  font-weight: normal;
+}
+
+
+body {
+  background: var(--off-white);
+  color: var(--dark-gray);
+}
+
+h1 {
+  font-size: 3em;
+  font-family: 'BigStemLight', 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+
+}
+
+h2 {
+  font-size: 2.5em;
+  font-family: 'BigStemLight', 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+
+}
+
+p{
+  font-size: 1em;
+}
+
+.large{
+  font-size: 1.25em;
+}
+
+.xlarge{
+  font-size: 1.5em;
+}
+
+.title{
+  display: block;
+  font-size: 5em;
+  line-height: normal ;
+  font-family: 'BigStemLight', 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.subtitle{
+  font-family: 'SingoRegular', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.filter-title{
+  font-size: 3em;
+  font-family: 'SingoRegular', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  text-shadow: 1px 0px 1px var(--dark-gray);
+}
+
+.filter-heading{
+  text-align: center;
+  font-weight: bold;
+  background-color: var(--gold);
+  color: var(--dark-gray);
+  line-height:normal
+}
+
+.rose{
+  color: var(--rose);
+}
+
+.olive{
+  color: var(--olive);
+}
+
+.gold{
+  color: var(--gold)
+}
+
+.dark-gray{
+  color: var(--dark-gray);
+}
+
+.gray{
+  color: var(--gray);
+}
+
+.lightbeige{
+  color: var(--lightbeige);
+}
+
+.white{
+  color: var(--white);
+}
+
+#banner .subtitle{
+  font-size: 2em;
+}
+
+.product-card .subtitle{
+  font-size: 1.5em;
+}
+
+.primary-btn{
+  /* background-color: var(--chocolate);
+  color: var(--dark-gray); */
+  background-color: var(--dark-gray);
+  color: var(--off-white);
+}
+
+.primary-btn:hover{
+  background-color: var(--dark-gray);
+  color: var(--off-white);
+}
+
+.dark-btn{
+  background-color: var(--dark-gray);
+  color: var(--off-white);
+}
+
+.dark-btn:hover{
+  color: var(--gold);
+  font-weight: bold;
+}
+.primary-btn, .dark-btn{
+  margin-top: calc(var(--spacing) * 3);
+  padding: calc(var(--spacing) * 1) 0;
+  cursor: pointer;
+}
+
+.cursor{
+  cursor: pointer;
+}
+
+.spinner-border,.spinner-grow{
+  display:inline-block;
+  width:var(--bs-spinner-width);
+  height:var(--bs-spinner-height);
+  vertical-align:var(--bs-spinner-vertical-align);
+  border-radius:50%;
+  animation:var(--bs-spinner-animation-speed) linear infinite var(--bs-spinner-animation-name);
+}
+@keyframes spinner-border{
+  to{
+    transform:rotate(360deg)
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.spinner-border{
+  --bs-spinner-width:2rem;
+  --bs-spinner-height:2rem;
+  --bs-spinner-vertical-align:-0.125em;
+  --bs-spinner-border-width:0.25em;
+  --bs-spinner-animation-speed:0.75s;
+  --bs-spinner-animation-name:spinner-border;
+  border:var(--bs-spinner-border-width) solid currentcolor;border-right-color:transparent
 }

@@ -1,101 +1,126 @@
-import Image from "next/image";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client"
+import ProductsContainer from "./components/products-container";
+import { getProducts } from "./services/products";
+import { useEffect, useState } from "react";
+import Banner from "./components/banner";
+import TopNav from "./components/top-nav";
+import FiltersContainer from "./components/filters-container";
+import Modal from "./components/reusable/modal";
+import ProductDetails from "./components/product-details";
+import ShoppingCart from "./components/shopping-cart";
+import Checkout from "./components/checkout";
+import Loader from "./components/reusable/loader";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [products, setProducts] = useState();
+  const [product, setProduct] = useState();
+  const [order, setOrder] = useState([] as any);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalInfo, setModalInfo] = useState();
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+  useEffect(()=> {
+    getProducts().then(res=> 
+      {
+        setProducts(res)
+      })
+  },[])
+
+  async function getProductById(id){
+    const product = products.find(p => p._id == id);
+    setProduct(product);
+    return product;
+  }
+
+  function handleProductClick(id){
+   getProductById(id).then(() => openModal("details")); 
+  }
+
+  function handleFilterClick(filter){
+    const a = "#"+ filter + "Container"; 
+    const anchor = document.querySelector(a);
+    anchor.scrollIntoView({ behavior: 'smooth', block: 'start' })
+}
+
+  function handleBagClick(item?, q: number = 1, type = "cart"){
+    
+    if(type === "bag"){
+      const itemExists = order.find(i => i.id === item) !== undefined;
+
+      if(itemExists){
+        const newOrder = order;
+        const index = newOrder.findIndex(i => i.id === item);
+        const updatedItem = {
+          id: newOrder[index].id,
+          product: newOrder[index].product,
+          quantity: newOrder[index].quantity + q
+        }
+  
+        newOrder[index] = updatedItem;
+        setOrder(newOrder);
+  
+      } else {
+        const newItem = {
+          id: item,
+          product: products.find(p => p._id == item),
+          quantity: q
+        }
+        setOrder([...order, newItem])
+      } 
+    }
+      
+    openModal("cart");
+  }
+
+  function handleTrashClick(id){
+    const updatedOrder = order.filter(item => item.id !== id);
+    setOrder(updatedOrder); 
+  }
+
+  function handlePayClick( ){
+    openModal("checkout");
+  }
+
+  const openModal = (info) => {
+    setModalInfo(info);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    
+    setIsModalOpen(false);
+  };
+
+  return (
+   <div className="page">
+     <div className=" bg-black py-2 text-center" style={{color:"var(--lightbeige)"}}>
+        <p >FREE SHIPPING ON ORDERS $50+</p>
+      </div>
+    <div className="main">
+      <TopNav handleBagClick={handleBagClick} cart={order} />
+      <Banner />
+      
+      <Modal isOpen={isModalOpen} onClose={closeModal} >
+        {
+          modalInfo == "details"
+            ? <ProductDetails product={product}/>
+            : modalInfo =="checkout"
+              ? <Checkout order = {order}/>
+              : <ShoppingCart cart={order} handlePayClick = {handlePayClick} handleTrashClick = {handleTrashClick}/>
+        }
+        
+      </Modal>
+      {
+        products 
+          ? 
+          <>
+            <FiltersContainer handleFilterClick = {handleFilterClick}/>
+            <ProductsContainer products={products} handleProductClick={handleProductClick} handleBagClick={handleBagClick}/>
+          </>
+          : <Loader />
+      }
+    
+    </div> 
+   </div>
   );
 }
