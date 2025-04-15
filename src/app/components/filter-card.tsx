@@ -1,19 +1,20 @@
-import {Card} from "react-bootstrap";
+/* eslint-disable @next/next/no-img-element */
 
-export default function FilterCard(props){
+export default function FilterCard(props: { src: string; title: string; filter: string; color: string; handleFilterClick: (filter: string) => void; }){
 
     const src = props.src;
     const title = props.title;
     const filter = props.filter;
     const color = props.color;
 
-    const handleFilterClick = (e) => {
-        props.handleFilterClick(e.target.id)
+    const handleFilterClick = () => {
+        props.handleFilterClick(filter)
     }
 
     return(
-        <Card className="contain-content w-full h-100 cursor object-scale-down" style={{backgroundImage:`url(${src})`}} onClick={handleFilterClick} id={filter}>
-            <Card.Title className={`absolute bottom-3 text-center w-full filter-title ${color}`}>{title}</Card.Title> 
-        </Card>
+        <div className="relative w-full h-full" onClick={handleFilterClick}>
+            <img src={`${src}`} alt=""/>
+            <p className={`absolute bottom-1 filter-title w-full text-center ${color}`} id={filter}>{title}</p>
+        </div>
     )
 }

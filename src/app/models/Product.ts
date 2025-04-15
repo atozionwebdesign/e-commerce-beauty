@@ -1,20 +1,37 @@
-import { Double, Int32 } from "mongodb";
-import mongoose from "mongoose";
+import mongoose, {Document, Schema, Model} from 'mongoose';
 
-const ProductSchema = new mongoose.Schema({
+interface IProduct extends Document{
+
+    name: string,
+    short_description: string, 
+    long_description: string,
+    images: Array<string>,
+    price: string,
+    sizes: Array<string>,
+    rating: number,
+    num_of_ratings: number,
+    type: string,
+    ingredients:Array<{name:string, details:string}>
+    includes:Array<string | {id: string}>
+}
+
+const ProductSchema = new Schema<IProduct>({
+   
     name: {
         type: String
     },
     short_description: String, 
     long_description: String,
-    img: String,
+    images: Array,
     price: String,
     sizes: Array,
-    rating: Double,
-    num_of_ratings: Int32,
-    type: String
+    rating: Number,
+    num_of_ratings: Number,
+    type: String,
+    ingredients: Array,
+    includes: Array
 }, { versionKey: false });
 
-const Product = mongoose.models.Product ||mongoose.model('Product', ProductSchema);
+const IProduct: Model<IProduct> = mongoose.models.Product || mongoose.model<IProduct>('Product', ProductSchema);
 
-export default Product;
+export default IProduct;

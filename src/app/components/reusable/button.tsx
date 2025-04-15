@@ -1,4 +1,14 @@
-export default function Button({ children, onClick, disabled = false, className, id }) {
+import { MouseEventHandler } from "react";
+
+type ButtonProps = {
+  children: React.ReactNode,
+  onClick: MouseEventHandler<HTMLButtonElement>,
+  disabled?: boolean,
+  className: string,
+  id?: string
+}
+
+const Button: React.FC<ButtonProps> = ({ children, onClick, disabled = false, className, id}) => {
     return (
       <button
         onClick={onClick}
@@ -10,3 +20,5 @@ export default function Button({ children, onClick, disabled = false, className,
       </button>
     );
   }
+
+export default Button;

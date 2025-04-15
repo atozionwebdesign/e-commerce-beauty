@@ -1,13 +1,15 @@
 import { Rating } from 'react-simple-star-rating';
 
-export default function StarRating(props){
+export default function StarRating(props: { rating: number ; size: number; count: number; class?:string}){
 
-let rating = props.rating;
+let rating = Math.round(props.rating * 10) / 10;
+
 if(rating == null){
-    rating = ""
+    rating = 0
 }
+
 const size = props.size;
-const count = props.count;
+const count = props.count; 
 
     return (
         <div className='flex items-center'>
@@ -17,10 +19,10 @@ const count = props.count;
                 readonly
                 SVGstyle={{display:"inline"}}
                 size={size}
-                className='mr-2'
+                className={`mr-2 ${props.class}`}
                 fillColor='var(--gold)'
             />
-            <p className='inline '>{`${rating} (${count})`}</p>
+            <p className='inline small my-auto'>{`${rating} (${count})`}</p>
         </div>
     )
 }

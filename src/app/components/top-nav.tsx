@@ -1,31 +1,47 @@
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass, faShoppingCart, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass, faShop, faShoppingCart, faUser } from '@fortawesome/free-solid-svg-icons';
+import ICartItem from "../models/CartItem";
 
-export default function TopNav(props) {
+export default function TopNav(props: { cart: string | ICartItem[]; handleBagClick: (type: string, q?: number, item?: string) => void; }) {
+    const cartLength =  
+        props.cart
+            ? props.cart.length
+            : ''
     
-    return (
-        <div className="h-30" style={{backgroundColor:"var(--white)"}}>
-            <div className="h-20 items-center px-50 w-full grid grid-cols-12" >
-                
-                <div className="col-span-5 w-full h-full">
+    const router = useRouter();
 
+    function handleClick(){
+        props.handleBagClick('cart');
+    }
+
+    return (
+        <div className="py-5 md:sticky top-0 z-10 bg-(--off-white)">
+            <div className="h-fit px-5 lg:px-10 w-full grid grid-cols-11 " >
+                
+                <div className="col-span-3 w-full h-full">
+                    <p>
+                        <FontAwesomeIcon icon={faShop}></FontAwesomeIcon>
+                    </p>
                 </div>
-                <div className="col-span-2 justify-items-center">
+                <div className="col-span-5 justify-items-center">
                     <Image 
-                        src="/assets/logo.png"
-                        width={175}
+                        src="/assets/logo.svg"
+                        width={230}
                         height={75}
                         alt="ii.ix.xxii"
+                        onClick={() => router.push('/')}
+                        className="cursor-pointer"
                     />
                 </div>
-                <div className="col-span-5 w-full h-full justify-items-end content-center">
+                <div className="col-span-3 w-full h-full justify-items-end">
                     <div className="flex">
                         <p>
                             <FontAwesomeIcon icon={faMagnifyingGlass}></FontAwesomeIcon>
                         </p>
-                        <p onClick={props.handleBagClick} className="mx-5">
-                            <FontAwesomeIcon icon={faShoppingCart} className=" cursor"></FontAwesomeIcon><span className="ml-1 gold"><sup>{props.cart.length}</sup></span>
+                        <p onClick={handleClick} className="mx-2 md:mx-5">
+                            <FontAwesomeIcon icon={faShoppingCart} className=" cursor"></FontAwesomeIcon><span className="ml-1 gold"><sup>{cartLength}</sup></span>
                         </p>
                         <p>
                             <FontAwesomeIcon icon={faUser}></FontAwesomeIcon>
@@ -33,17 +49,6 @@ export default function TopNav(props) {
                     </div>
                 </div>
             </div>
-            <div className="h-10 w-full text-center">
-                <p>
-                    <span className="mx-5">SHOP ALL PRODUCTS</span>
-                    <span className="mx-5">SKINCARE</span>
-                    <span className="mx-5">BODY CARE</span>
-                    <span className="mx-5">HAIR CARE</span>
-                    <span className="mx-5">SALE</span>
-                </p>
-                
-            </div>
         </div>
-      
     );
   }

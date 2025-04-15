@@ -7,8 +7,7 @@ export default function Loader(){
             <div className='my-auto flex'>
                 <Spinner animation="border" role="status" className='h-full'/>
                 <p className="ml-2">LOADING...</p>
-            </div>
-                
+            </div>       
         </div>
     )
 }

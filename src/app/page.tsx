@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 import ProductsContainer from "./components/products-container";
 import { getProducts } from "./services/products";
@@ -11,13 +10,17 @@ import ProductDetails from "./components/product-details";
 import ShoppingCart from "./components/shopping-cart";
 import Checkout from "./components/checkout";
 import Loader from "./components/reusable/loader";
+import IProduct from "./models/Product";
+import ICartItem from "./models/CartItem";
+import Footer from "./components/footer";
 
 export default function Home() {
-  const [products, setProducts] = useState();
-  const [product, setProduct] = useState();
-  const [order, setOrder] = useState([] as any);
+  const [products, setProducts] = useState<IProduct[]>();
+  const [product, setProduct] = useState<IProduct>();
+  const [cart, setCart] = useState<ICartItem[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalInfo, setModalInfo] = useState();
+  const [modalInfo, setModalInfo] = useState('');
+  
 
   useEffect(()=> {
     getProducts().then(res=> 
@@ -26,101 +29,132 @@ export default function Home() {
       })
   },[])
 
-  async function getProductById(id){
-    const product = products.find(p => p._id == id);
-    setProduct(product);
-    return product;
+  async function getProductById(id: string){
+    if(products){
+      const product = products.find(p => p._id == id);
+      setProduct(product);
+      return product;
+    }
+    
   }
 
-  function handleProductClick(id){
-   getProductById(id).then(() => openModal("details")); 
+  function handleProductClick(id: string){
+    
+    getProductById(id).then(()=> {
+      openModal("details"); 
+    })
   }
 
-  function handleFilterClick(filter){
+  function handleFilterClick(filter: string){
     const a = "#"+ filter + "Container"; 
     const anchor = document.querySelector(a);
-    anchor.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    if(anchor){
+      anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
 }
 
-  function handleBagClick(item?, q: number = 1, type = "cart"){
+  function handleBagClick(type:string, q?: number, item?:string){
+
+    const add = q ? q : 1;
     
     if(type === "bag"){
-      const itemExists = order.find(i => i.id === item) !== undefined;
+      const itemExists = cart?.find(i => i.id === item) !== undefined;
 
       if(itemExists){
-        const newOrder = order;
+        const newOrder = cart;
         const index = newOrder.findIndex(i => i.id === item);
         const updatedItem = {
           id: newOrder[index].id,
           product: newOrder[index].product,
-          quantity: newOrder[index].quantity + q
+          quantity: add,
+          total: parseFloat(newOrder[index].product.price) * add
         }
   
         newOrder[index] = updatedItem;
-        setOrder(newOrder);
+        
+        setCart(newOrder);
   
       } else {
         const newItem = {
           id: item,
-          product: products.find(p => p._id == item),
-          quantity: q
+          product: products?.find(p => p._id == item),
+          quantity: q,
+          total: parseFloat(products?.find(p => p._id == item)?.price as string) * add
         }
-        setOrder([...order, newItem])
+        
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        let update:any[];
+
+        if(cart){
+          update = [...cart, newItem]
+        } else{
+          update = [newItem];
+        }
+
+        setCart(update)
       } 
     }
       
     openModal("cart");
   }
 
-  function handleTrashClick(id){
-    const updatedOrder = order.filter(item => item.id !== id);
-    setOrder(updatedOrder); 
+  function handleTrashClick(id: string){
+    const updatedOrder = cart?.filter(item => item.id !== id);
+    setCart(updatedOrder); 
   }
 
   function handlePayClick( ){
     openModal("checkout");
   }
 
-  const openModal = (info) => {
+  const openModal = (info: string) => {
     setModalInfo(info);
     setIsModalOpen(true);
   };
 
   const closeModal = () => {
-    
     setIsModalOpen(false);
   };
 
   return (
-   <div className="page">
-     <div className=" bg-black py-2 text-center" style={{color:"var(--lightbeige)"}}>
-        <p >FREE SHIPPING ON ORDERS $50+</p>
-      </div>
-    <div className="main">
-      <TopNav handleBagClick={handleBagClick} cart={order} />
-      <Banner />
-      
-      <Modal isOpen={isModalOpen} onClose={closeModal} >
-        {
-          modalInfo == "details"
-            ? <ProductDetails product={product}/>
-            : modalInfo =="checkout"
-              ? <Checkout order = {order}/>
-              : <ShoppingCart cart={order} handlePayClick = {handlePayClick} handleTrashClick = {handleTrashClick}/>
-        }
+    <div className="page min-h-screen pb-5">
+      <div className=" bg-black py-2 text-center" style={{color:"var(--lightbeige)"}}>
+          <p >FREE SHIPPING ON ORDERS $50+</p>
+        </div>
+      <div className="main">
+        <TopNav handleBagClick={handleBagClick} cart={cart} />
+        <div className="w-full text-center items-end flex justify-center gold"> 
+          <span className="mr-7 cursor filter-link">ALL</span>
+          <span className="mr-7 cursor filter-link">SKIN</span>
+          <span className="mr-7 cursor filter-link">BODY</span>
+          <span className="mr-7 cursor filter-link">HAIR</span>
+        </div>
+        <Banner />
         
-      </Modal>
-      {
-        products 
-          ? 
-          <>
-            <FiltersContainer handleFilterClick = {handleFilterClick}/>
-            <ProductsContainer products={products} handleProductClick={handleProductClick} handleBagClick={handleBagClick}/>
-          </>
-          : <Loader />
-      }
-    
-    </div> 
-   </div>
+        <Modal isOpen={isModalOpen} onClose={closeModal} >
+          {
+            modalInfo == "details"
+              ?  product
+                  ? <ProductDetails product={product} handleBagClick={handleBagClick} cart={cart}  />
+                  : ''
+              : modalInfo =="checkout"
+                ? <Checkout cart = {cart}/>
+                : <ShoppingCart cart={cart} setCart={setCart} handlePayClick = {handlePayClick} handleTrashClick = {handleTrashClick}/>
+          }
+          
+        </Modal>
+        {
+          products 
+            ? 
+            <>
+              <FiltersContainer handleFilterClick = {handleFilterClick}/>
+              <ProductsContainer products={products} handleProductClick={handleProductClick} handleBagClick={handleBagClick}/>
+            </>
+            : <Loader />
+        }
+      
+      </div> 
+      <Footer />
+    </div>
   );
 }
