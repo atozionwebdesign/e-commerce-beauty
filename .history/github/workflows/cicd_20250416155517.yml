@@ -1,0 +1,15 @@
+name: Deploy Next.js application
+
+on:
+  push:
+    branches: 
+      - deploy-with-docker-ec2
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v4
+      - name: Create .env file
+        run: echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> .env && echo "NEXT_PUBLIC_URL=${{secrets.}}"
