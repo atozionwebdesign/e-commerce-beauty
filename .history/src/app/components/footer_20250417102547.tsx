@@ -4,7 +4,7 @@ import Image from 'next/image';
 
 export default function Footer(){
     return (
-        <div className='h-fit flex mt-5 w-full footer flex-col lg:flex-row md:px-5 lg:px-10 items-center' style={{color:"var(--dark-gray)"}}>
+        <div className='h-fit flex mt-5 w-full footer flex-col lg:flex-row md:px-5 lg:px-10 items-center' style={{color:"var(--dark-gr)"}}>
             <div className='flex flex-col self-center mx-auto'>
                 <a href='https://atozionwebdesign.com' target='_blank'>
                     <Image 
