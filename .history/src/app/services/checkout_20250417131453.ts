@@ -6,7 +6,7 @@ if(process.env.NODE_ENV == "development") {
 }
 
 export async function fetchClientSecret(data: any){
-    const res = await fetch(baseURL + '/api/checkout', {
+    const res = await fetch(process.env.NEXT_PUBLIC_URL + '/api/checkout', {
         method: 'POST',
         headers : { 
             'Accept': 'application/json',

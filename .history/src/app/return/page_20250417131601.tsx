@@ -7,13 +7,12 @@ function Success(){
     const successValue = searchParams.get('success');
     const success = successValue === "true";
 
-    return (
-    <>
-        { success    
-            ? <p>Payment successful, thank you</p>
-            : <p>Please try again....</p>
-        }
-    </>
+    return (<>
+            { success    
+                ? <p>Payment successful, thank you</p>
+                : <p>Please try again....</p>
+            }
+        </>
     )
 }
 
