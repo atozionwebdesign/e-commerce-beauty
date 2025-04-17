@@ -15,7 +15,7 @@ export default function Footer(){
                         className='mx-auto'
                     />
                 </a>
-                <p className='small text-center md:text-left'>LIVE Test application developed by <strong>Ashley Stith, A To Zion Web Design, LLC</strong></p>
+                <p className='small text-center md:text-left'>LIVE Test application developed by <strong>Ashley Stith, A</strong></p>
                 <div className='flex mt-5 lg:mt-0 mx-auto'>
                         <p className="large"><a href="https://github.com/atozionwebdesign/e-commerce-beauty" target="_blank"><FontAwesomeIcon icon={faGithub}></FontAwesomeIcon></a></p>   
                 </div>
