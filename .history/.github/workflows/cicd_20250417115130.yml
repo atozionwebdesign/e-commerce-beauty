@@ -16,7 +16,7 @@ jobs:
       - name: Build docker image
         run: docker build -t atozionwebdesign/ecommerce-beauty .
       - name: Login to docker hub
-        run: docker login --username ${{ secrets.DOCKER_USERNAME }} --password-stdin ${{ secrets.DOCKER_PASSWORD }} 
+        run: docker login --username ${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.DOCKER_PASSWORD }} 
       - name: Publish image to docker hub
         run: docker push atozionwebdesign/ecommerce-beauty:latest
 
