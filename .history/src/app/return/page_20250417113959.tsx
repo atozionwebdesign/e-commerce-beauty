@@ -1,7 +1,6 @@
 "use client"
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
-import Loader from "../components/reusable/loader";
 
 export default function Return(){
 
@@ -11,12 +10,14 @@ export default function Return(){
     
     return (
         <>
-            <Suspense fallback={<Loader />}>
-                { success    
-                    ? <p>Payment successful, thank you</p>
-                    : <p>Please try again....</p>
-                }
-            </Suspense>    
-        </> 
+        <Suspense fallback={<Loader }>
+            { success    
+                ? <p>Payment successful, thank you</p>
+                : <p>Please try again....</p>
+            }
+        </Suspense>
+        
+        </>
+        
     )
 }
