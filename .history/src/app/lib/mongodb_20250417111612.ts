@@ -5,8 +5,9 @@ if (!MONGODB_URI) {
     'Please define the MONGODB_URI environment variable inside .env.local'
   );
 }
+const globalWithMongoose = global as typeof globalThis;
 
-let cached = global.mongoose;
+let cached = globalWithMongoose.mongoose;
 if (!cached) {
   cached = global.mongoose = { conn: null, promise: null };
 }

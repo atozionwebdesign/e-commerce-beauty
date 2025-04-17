@@ -5,7 +5,9 @@ if (!MONGODB_URI) {
     'Please define the MONGODB_URI environment variable inside .env.local'
   );
 }
-
+declare global {
+  var _mongoClientPromise: Promise<MongoClient>
+}
 let cached = global.mongoose;
 if (!cached) {
   cached = global.mongoose = { conn: null, promise: null };

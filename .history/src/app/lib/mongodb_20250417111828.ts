@@ -1,11 +1,13 @@
-import mongoose from 'mongoose';
+import mongoose, {Mong} from 'mongoose';
 const MONGODB_URI = process.env.MONGODB_URI;
 if (!MONGODB_URI) {
   throw new Error(
     'Please define the MONGODB_URI environment variable inside .env.local'
   );
 }
-
+let globalWithMongoose = global as typeof globalThis & {
+  mongoose: mon;
+};
 let cached = global.mongoose;
 if (!cached) {
   cached = global.mongoose = { conn: null, promise: null };

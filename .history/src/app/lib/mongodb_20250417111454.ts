@@ -5,7 +5,9 @@ if (!MONGODB_URI) {
     'Please define the MONGODB_URI environment variable inside .env.local'
   );
 }
-
+let globalWithMongoose = global as typeof globalThis & {
+  mongoose: PrismaClient;
+};
 let cached = global.mongoose;
 if (!cached) {
   cached = global.mongoose = { conn: null, promise: null };
