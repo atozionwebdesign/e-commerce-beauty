@@ -1,12 +1,7 @@
 import { stripe } from '@/app/lib/stripe';
 import ICartItem from '@/app/models/CartItem';
 
-let baseURL: string | undefined = '';
-
-if(process.env.NODE_ENV == "development") {
-  baseURL = process.env.NEXT_PUBLIC_URL;
-}
-
+https://ec2-52-90-79-146.compute-1.amazonaws.com//api/checkout
 export async function POST(req: Request) {
     const cart_items = await req.json();
     const line_items = cart_items.map((item:ICartItem ) => {
@@ -31,7 +26,7 @@ export async function POST(req: Request) {
         line_items:line_items,
         mode: 'payment',
         automatic_tax: {enabled: true},
-        return_url: `${baseURL}/return?success=true`,
+        return_url: `${process.env.NEXT_PUBLIC_URL}/return?success=true`,
         shipping_options:  [
           {
             shipping_rate_data: {

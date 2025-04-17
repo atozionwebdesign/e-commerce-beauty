@@ -4,7 +4,7 @@ import ICartItem from '@/app/models/CartItem';
 let baseURL: string | undefined = '';
 
 if(process.env.NODE_ENV == "development") {
-  baseURL = process.env.NEXT_PUBLIC_URL;
+  baseURL = process.env.NEXT_AWS_BPUBLIC_URL;
 }
 
 export async function POST(req: Request) {
@@ -31,7 +31,7 @@ export async function POST(req: Request) {
         line_items:line_items,
         mode: 'payment',
         automatic_tax: {enabled: true},
-        return_url: `${baseURL}/return?success=true`,
+        return_url: `${process.env.NEXT_PUBLIC_URL}/return?success=true`,
         shipping_options:  [
           {
             shipping_rate_data: {

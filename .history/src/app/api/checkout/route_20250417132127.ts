@@ -31,7 +31,7 @@ export async function POST(req: Request) {
         line_items:line_items,
         mode: 'payment',
         automatic_tax: {enabled: true},
-        return_url: `${baseURL}/return?success=true`,
+        return_url: `${process.env.NEXT_PUBLIC_URL}/return?success=true`,
         shipping_options:  [
           {
             shipping_rate_data: {
