@@ -23,7 +23,7 @@ export default function Return(){
     return (
         <>
             <Suspense>
-               <Success />
+               <Su
             </Suspense>    
         </> 
     )

@@ -9,9 +9,9 @@ function Success(){
 
     return (
         <>
-            { success    
-                ? <p>Payment successful, thank you</p>
-                : <p>Please try again....</p>
+             { success    
+                    ? <p>Payment successful, thank you</p>
+                    : <p>Please try again....</p>
             }
         </>
     )
@@ -23,7 +23,7 @@ export default function Return(){
     return (
         <>
             <Suspense>
-               <Success />
+               
             </Suspense>    
         </> 
     )

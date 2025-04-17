@@ -7,14 +7,7 @@ function Success(){
     const successValue = searchParams.get('success');
     const success = successValue === "true";
 
-    return (
-        <>
-            { success    
-                ? <p>Payment successful, thank you</p>
-                : <p>Please try again....</p>
-            }
-        </>
-    )
+    return 
 }
 
 export default function Return(){
@@ -23,7 +16,7 @@ export default function Return(){
     return (
         <>
             <Suspense>
-               <Success />
+               
             </Suspense>    
         </> 
     )
