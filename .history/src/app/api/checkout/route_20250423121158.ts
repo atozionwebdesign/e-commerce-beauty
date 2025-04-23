@@ -3,8 +3,10 @@ import ICartItem from '@/app/models/CartItem';
 
 const baseURL = process.env.NEXT_PUBLIC_URL;
 
+
 export async function POST(req: Request) {
     const cart_items = await req.json();
+    console.log(cart_items);
     const line_items = cart_items.map((item:ICartItem ) => {
         return {
           price_data: {

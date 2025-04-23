@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-const baseURL = process.env.NEXT_PUBLIC_URL;
+let baseURL: string | undefined = '';
 
+if(process.env.NODE_ENV == "development") {
+  baseURL = process.env.NEXT_PUBLIC_URL;
+}
 export async function fetchClientSecret(data: any){
     const res = await fetch(baseURL + '/api/checkout', {
         method: 'POST',

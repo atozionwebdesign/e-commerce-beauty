@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+let baseURL: string | undefined = '';
+
 const baseURL = process.env.NEXT_PUBLIC_URL;
 
 export async function fetchClientSecret(data: any){
