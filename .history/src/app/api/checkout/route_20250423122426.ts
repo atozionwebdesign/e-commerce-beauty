@@ -1,11 +1,8 @@
 import { stripe } from '@/app/lib/stripe';
 import ICartItem from '@/app/models/CartItem';
 
-let baseURL: string | undefined = '';
+const baseURL = process.env.NEXT_PUBLIC_URL;
 
-if(process.env.NODE_ENV == "development") {
-  baseURL = process.env.NEXT_PUBLIC_URL;
-}
 
 export async function POST(req: Request) {
     const cart_items = await req.json();

@@ -5,7 +5,7 @@ let baseURL: string | undefined = '';
 
 if(process.env.NODE_ENV == "development") {
   baseURL = process.env.NEXT_PUBLIC_URL;
-}
+
 
 export async function POST(req: Request) {
     const cart_items = await req.json();
