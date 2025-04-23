@@ -32,7 +32,7 @@ export async function POST(req: Request) {
         line_items:line_items,
         mode: 'payment',
         automatic_tax: {enabled: true},
-        return_url: `https://ecommerce-beauty.atozionwebdesign.com`,
+        return_url: `https://ecommerce-beauty.atozionwebdesign.com/`,
         shipping_options:  [
           {
             shipping_rate_data: {
